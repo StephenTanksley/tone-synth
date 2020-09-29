@@ -35,12 +35,12 @@ export const Synth = () => {
     let outputs = midi.outputs;
 
     // console.log(inputs);
-    // console.log(outputs);
+    console.log(outputs);
   };
 
   const onMIDIMessage = (message) => {
     data = message.data;
-    // console.log("MIDI data", data);
+    console.log("MIDI data", data);
   };
 
   // Otherwise, we run the onMIDIFailure callback to show that we don't have that access.
@@ -54,6 +54,14 @@ export const Synth = () => {
     synth.triggerAttackRelease("C4", "8n");
   };
 
+  const playE = () => {
+    synth.triggerAttackRelease("E4", "8n");
+  };
+
+  const playA = () => {
+    synth.triggerAttackRelease("A0", "4n");
+  };
+
   const slider = () => {
     const slideSynth = new Tone.Oscillator().toDestination();
     slideSynth.frequency.value = "C4";
@@ -65,8 +73,14 @@ export const Synth = () => {
 
   return (
     <div>
-      <button name="play-tone" id="play-tone" onClick={playC}>
+      <button name="play-C4" id="play-C4" onClick={playC}>
         Play C4
+      </button>
+      <button name="play-E4" id="play-E4" onClick={playE}>
+        Play E4
+      </button>
+      <button name="play-A0" id="play-A0" onClick={playA}>
+        Play A0
       </button>
 
       <button name="play-slide" id="play-slide" onClick={slider}>
