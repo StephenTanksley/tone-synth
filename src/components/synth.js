@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Tone from "tone";
 
 export const Synth = () => {
+  const [note, setNote] = useState();
   let midi, data;
 
   let AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -33,14 +34,16 @@ export const Synth = () => {
     }
 
     let outputs = midi.outputs;
-
-    // console.log(inputs);
-    console.log(outputs);
   };
 
   const onMIDIMessage = (message) => {
     data = message.data;
-    console.log("MIDI data", data);
+    // console.log("MIDI data", data);
+
+    if (data[0] === 144) {
+      setNote(data[1]);
+      console.log("Current note: ", note);
+    }
   };
 
   // Otherwise, we run the onMIDIFailure callback to show that we don't have that access.
@@ -53,6 +56,10 @@ export const Synth = () => {
   const playC = () => {
     synth.triggerAttackRelease("C4", "8n");
   };
+
+  // const playNote = (midi) => {
+
+  // }
 
   const playE = () => {
     synth.triggerAttackRelease("E4", "8n");
