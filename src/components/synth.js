@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Tone from "tone";
 
 export const Synth = () => {
   const [note, setNote] = useState();
   let midi, data;
 
-  let AudioContext = window.AudioContext || window.webkitAudioContext;
-  let audioCtx = new AudioContext();
-
-  // console.log(audioCtx);
+  useEffect(() => {
+    let AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = new AudioContext();
+    console.log(audioCtx);
+  }, []);
 
   // We initialize MIDI support to determine if the user's browser can support MIDI.
   const MIDIinit = async () => {
@@ -45,6 +46,10 @@ export const Synth = () => {
     playNote(note, velocity);
   };
 
+  const playA = () => {
+    synth.triggerAttackRelease("A4", "8n");
+  };
+
   // Otherwise, we run the onMIDIFailure callback to show that we don't have that access.
   const onMIDIFailure = () => {
     console.log("Could not access your MIDI devices.");
@@ -52,47 +57,18 @@ export const Synth = () => {
 
   const synth = new Tone.Synth().toDestination();
 
-  const playC = () => {
-    synth.triggerAttackRelease("C4", "8n");
-  };
-
-  const playE = () => {
-    synth.triggerAttackRelease("E4", "8n");
-  };
-
   const playNote = (note, velocity) => {
     const requestedNote = Tone.Frequency(note, "midi").toNote();
     synth.triggerAttack(requestedNote, "+0.5", velocity);
-  };
-
-  const playA = () => {
-    synth.triggerAttackRelease("A0", "4n");
-  };
-
-  const slider = () => {
-    const slideSynth = new Tone.Oscillator().toDestination();
-    slideSynth.frequency.value = "C4";
-    slideSynth.frequency.rampTo("C2", 2);
-    slideSynth.start().stop("+3");
+    synth.triggerRelease("0.2");
   };
 
   MIDIinit();
 
   return (
     <div>
-      <button name="play-C4" id="play-C4" onClick={playC}>
-        Play C4
-      </button>
-      <button name="play-E4" id="play-E4" onClick={playE}>
-        Play E4
-      </button>
-      <button name="play-A0" id="play-A0" onClick={playA}>
-        Play A0
-      </button>
-
-      <button name="play-slide" id="play-slide" onClick={slider}>
-        Play Slide
-      </button>
+      "I'm building a synthesizer!"
+      <button onClick={playA}>"I'm a button that plays A4"</button>
     </div>
   );
 };
